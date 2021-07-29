@@ -1,5 +1,9 @@
 const express = require('express');//gives you access to the express library by searching your node_modules for "express"
 const app = express();//creates an instance of the express constructor, which we will name "app"
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
 const port = 3000
 
 const mockUserData=[
@@ -7,6 +11,7 @@ const mockUserData=[
 {name:'Jill'}
 ]
 
+// colons are used as variables that be viewed in the params
 app.get('/users/:id',function(req,res){
 	console.log(req.params.id)
 	res.json({
@@ -23,6 +28,31 @@ app.get('/users/:id',function(req,res){
 //  	 	users: mockUserData
 //  	})
 // })
+
+// función para manejar una solicitud POST
+app.post('/login',function(req,res){
+    // Typically passwords are encrypted using something like bcrypt before sending to database
+    const username=req.body.username;
+    const password=req.body.password;
+
+    // This should come from the database
+    const mockUsername="billyTheKid";
+    const mockPassword="superSecret";
+
+    if (username===mockUsername && password===mockPassword){
+        // In practice, use JSON web token sign method here to make an encrypted token
+         res.json({
+              success: true,
+              message: 'password and username match!',
+              token: 'encrypted token goes here'
+         })
+    } else {
+         res.json({
+              success: false,
+              message: 'password and username do not match'
+         })
+    }
+})
 
 
 // app.listen(3000,function(){
